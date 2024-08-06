@@ -1,0 +1,92 @@
+nmap -sC -sV -Pn 10.10.227.89         
+
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-08-05 22:57 EDT
+Nmap scan report for 10.10.227.89
+Host is up (0.17s latency).
+Not shown: 997 closed tcp ports (reset)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.9 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 d9:42:e0:c0:d0:a9:8a:c3:82:65:ab:1e:5c:9c:0d:ef (RSA)
+|   256 ff:b6:27:d5:8f:80:2a:87:67:25:ef:93:a0:6b:5b:59 (ECDSA)
+|_  256 e1:2f:4a:f5:6d:f1:c4:bc:89:78:29:72:0c:ec:32:d2 (ED25519)
+80/tcp   open  http    Apache httpd 2.4.41
+|_http-title: 403 Forbidden
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+8000/tcp open  http    nginx 1.18.0 (Ubuntu)
+| http-robots.txt: 3 disallowed entries 
+|_/*.sql$ /*.zip$ /*.bak$
+|_http-server-header: nginx/1.18.0 (Ubuntu)
+|_http-title: 403 Forbidden
+8080/tcp open  http-proxy Werkzeug/2.2.3 Python/3.8.10
+|_http-server-header: Werkzeug/2.2.3 Python/3.8.10
+|_http-title: Clocky
+| fingerprint-strings: 
+|   GetRequest: 
+|     HTTP/1.1 200 OK
+|     Server: Werkzeug/2.2.3 Python/3.8.10
+|     Date: Tue, 06 Aug 2024 03:01:30 GMT
+|     Content-Type: text/html; charset=utf-8
+|     Content-Length: 6206
+|     Connection: close
+|     <head>
+|     <style>
+|     body {
+|     background-color:#fff;
+|     background-position:center;
+|     background-repeat:repeat-y;
+|     font-family: "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
+|     font-size:10px;
+|     color:#777;
+|     #container {
+|     width:500px;
+|     margin:0 auto;
+|     #header {
+|     background-color:#eeeeee;
+|     margin:10px;
+|     padding:30px 10px 30px 10px;
+|     border-top:2px solid #ccc;
+|     #header h1 {
+|     text-align:center;
+|     font-family:Trebuchet MS, Geneva, Arial, Helvetica, sans-serif;
+|     font-size:30px;
+|     color:#333;
+|     margin:0;
+|     font-weight:normal;
+|     #header h1 strong {
+|     color:#A85BA6;
+|     #header h1 a {
+|     color:#333;
+|     text-decoration:none;
+|     #header h2 {
+|     font-size:11px;
+|     font-weight:normal;
+|     text-align:center;
+|   HTTPOptions: 
+|     HTTP/1.1 200 OK
+|     Server: Werkzeug/2.2.3 Python/3.8.10
+|     Date: Tue, 06 Aug 2024 03:01:31 GMT
+|     Content-Type: text/html; charset=utf-8
+|     Allow: HEAD, OPTIONS, GET
+|     Content-Length: 0
+|     Connection: close
+|   RTSPRequest: 
+|     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+|     "http://www.w3.org/TR/html4/strict.dtd">
+|     <html>
+|     <head>
+|     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+|     <title>Error response</title>
+|     </head>
+|     <body>
+|     <h1>Error response</h1>
+|     <p>Error code: 400</p>
+|     <p>Message: Bad request version ('RTSP/1.0').</p>
+|     <p>Error code explanation: HTTPStatus.BAD_REQUEST - Bad request syntax or unsupported method.</p>
+|     </body>
+|_    </html>
+
+Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 31.02 seconds

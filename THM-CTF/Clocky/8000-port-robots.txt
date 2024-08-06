@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /*.sql$
+Disallow: /*.zip$
+Disallow: /*.bak$
+
+Flag 1: THM{14b45bb9eefdb584b79063eca6a31b7a}
